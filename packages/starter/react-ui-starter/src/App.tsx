@@ -1,5 +1,5 @@
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import {
     LedgerWalletAdapter,
@@ -10,14 +10,20 @@ import {
     SolletWalletAdapter,
     TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
-import React, { FC, ReactNode, useMemo } from 'react';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import React, { FC, ReactNode, useMemo, useEffect, useState  } from 'react';
+import { Display }  from "./Display"
 
 export const App: FC = () => {
+
+
     return (
+      <>
         <Context>
             <Content />
+            <Display />
         </Context>
+     </>
     );
 };
 
@@ -54,5 +60,11 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 const Content: FC = () => {
-    return <WalletMultiButton />;
+    return (
+    <>
+      <WalletMultiButton/>
+    </>
+    );
 };
+
+

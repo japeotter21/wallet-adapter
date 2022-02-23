@@ -23,7 +23,7 @@ export function useLocalStorage<T>(key: string, defaultState: T): [T, React.Disp
         }
         try {
             if (value === null) {
-                localStorage.removeItem(key);
+                localStorage.clear();
             } else {
                 localStorage.setItem(key, JSON.stringify(value));
             }

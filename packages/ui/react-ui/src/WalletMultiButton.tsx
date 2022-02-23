@@ -6,27 +6,30 @@ import { WalletConnectButton } from './WalletConnectButton';
 import { WalletIcon } from './WalletIcon';
 import { WalletModalButton } from './WalletModalButton';
 
+console.log("rebuild?")
 export const WalletMultiButton: FC<ButtonProps> = ({ children, ...props }) => {
     const { publicKey, wallet, disconnect } = useWallet();
     const { setVisible } = useWalletModal();
     const [copied, setCopied] = useState(false);
     const [active, setActive] = useState(false);
     const ref = useRef<HTMLUListElement>(null);
-
     const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
     const content = useMemo(() => {
         if (children) return children;
         if (!wallet || !base58) return null;
+        localStorage.setItem("k",base58);
         return base58.slice(0, 4) + '..' + base58.slice(-4);
     }, [children, wallet, base58]);
 
     const copyAddress = useCallback(async () => {
         if (base58) {
             await navigator.clipboard.writeText(base58);
+            
             setCopied(true);
             setTimeout(() => setCopied(false), 400);
         }
     }, [base58]);
+
 
     const openDropdown = useCallback(() => {
         setActive(true);
@@ -64,6 +67,7 @@ export const WalletMultiButton: FC<ButtonProps> = ({ children, ...props }) => {
     if (!base58) return <WalletConnectButton {...props}>{children}</WalletConnectButton>;
 
     return (
+    <div>
         <div className="wallet-adapter-dropdown">
             <Button
                 aria-expanded={active}
@@ -92,5 +96,7 @@ export const WalletMultiButton: FC<ButtonProps> = ({ children, ...props }) => {
                 </li>
             </ul>
         </div>
+    </div>
+    
     );
 };
